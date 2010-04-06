@@ -1,0 +1,43 @@
+<rewrite>
+	<!-- /?query-string -->
+	<rule>
+		<match case-sensetive="no">^(\?(.*?))?$</match>
+		<replace>articles?page=1&amp;master=html&amp;\2</replace>
+	</rule>
+	
+	<!-- /2?query-string -->
+	<rule>
+		<match case-sensetive="no">^([0-9])(\?(.*?))?$</match>
+		<replace>articles?page=\1&amp;master=html&amp;\3</replace>
+	</rule>
+	
+	<!-- /2.rss?query-string -->
+	<rule>
+		<match case-sensetive="no">^([0-9])\.(rss)(\?(.*?))?$</match>
+		<replace>articles?page=\1&amp;master=\2&amp;\4</replace>
+	</rule>
+	
+	<!-- /handle/2?query-string -->
+	<rule>
+		<match case-sensetive="no">^([^/?]+)/([0-9])(\?(.*?))?$</match>
+		<replace>articles/\1?page=\2&amp;master=html&amp;\4</replace>
+	</rule>
+	
+	<!-- /handle/2.rss?query-string -->
+	<rule>
+		<match case-sensetive="no">^([^/?]+)/([0-9])\.(rss)(\?(.*?))?$</match>
+		<replace>articles/\1?page=\2&amp;master=\3&amp;\5</replace>
+	</rule>
+	
+	<!-- /handle.rss?query-string -->
+	<rule>
+		<match case-sensetive="no">^([^/?]+)\.(rss)(\?(.*?))?$</match>
+		<replace>articles/\1?page=1&amp;master=\2&amp;\4</replace>
+	</rule>
+	
+	<!-- /handle?query-string -->
+	<rule>
+		<match case-sensetive="no">^([^/?]+)(\?(.*?))?$</match>
+		<replace>articles/\1?page=1&amp;master=html&amp;\3</replace>
+	</rule>
+</rewrite>
