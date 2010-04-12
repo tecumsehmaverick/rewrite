@@ -2,11 +2,12 @@
 	
 	class Extension_Rewrite extends Extension {
 		static $url = null;
+		static $headers = array();
 		
 		public function about() {
 			return array(
 				'name'			=> 'Rewrite',
-				'version'		=> '1.0.0',
+				'version'		=> '1.0.1',
 				'release-date'	=> '2010-04-06',
 				'author'		=> array(
 					'name'			=> 'Rowan Lewis',
@@ -22,8 +23,21 @@
 					'page'		=> '/frontend/',
 					'delegate'	=> 'FrontendPrePageResolve',
 					'callback'	=> 'frontendPrePageResolve'
+				),
+				array(
+					'page'		=> '/frontend/',
+					'delegate'	=> 'FrontendPreRenderHeaders',
+					'callback'	=> 'frontendPreRenderHeaders'
 				)
 			);
+		}
+		
+		public function frontendPreRenderHeaders($context) {
+			$page = Frontend::Page();
+			
+			foreach (self::$headers as $name => $value) {
+				$page->addHeaderToPage($name, $value);
+			}
 		}
 		
 		public function frontendPrePageResolve($context) {
@@ -81,6 +95,14 @@
 				$context['page'] = '/' . $symphony_page . '/';
 				$_SERVER['QUERY_STRING'] = $query_string;
 				$_GET = $query_array;
+				
+				// Set headers
+				foreach ($xpath->query('header', $rule) as $header) {
+					$name = $header->getAttribute('name');
+					$value = $header->getAttribute('value');
+					
+					self::$headers[$name] = $value;
+				}
 			}
 		}
 		
